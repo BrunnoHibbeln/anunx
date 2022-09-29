@@ -5,12 +5,17 @@ import {
    TextField,
    Typography,
    Button,
+   IconButton,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import { DeleteForever } from '@material-ui/icons'
 
 import TemplateDefault from '../../src/templates/Default'
 
 const useStyles = makeStyles((theme) => ({
+   mask: {},
+   mainImage: {},
+
    container: {
       padding: theme.spacing(8, 0, 6)
    },
@@ -21,6 +26,51 @@ const useStyles = makeStyles((theme) => ({
    boxContainer: {
       paddingBottom: theme.spacing(3),
    },
+   thumbsContainer: {
+      display: 'flex',
+      marginTop: '15px',
+   },
+   dropzone: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      textAlign: 'center',
+      padding: '10px',
+      width: 200,
+      height: 150,
+      margin: '0 15px 15px 0',
+      backgroundColor: theme.palette.background.default,
+      border: '2px dashed black'
+   },
+   thumb: {
+      position: 'relative',
+      width: '200px',
+      height: '150px',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center center',
+
+      '& $mainImage': {
+         position: 'absolute',
+         backgroundColor: 'blue',
+         padding: '6px 10px',
+         bottom: 0,
+         left: 0,
+      },
+
+      '&:hover $mask': {
+         display: 'flex',
+      },
+
+      '& $mask': {
+         display: 'none',
+         justifyContent: 'center',
+         alignItems: 'center',
+         textAlign: 'center',
+         backgroundColor: 'rgba(0, 0, 0, 0.7)',
+         width: '100%',
+         height: '100%',
+      }
+   }
 }))
 
 const Publish = () => {
@@ -109,12 +159,34 @@ const Publish = () => {
                   Images
                </Typography>
                <Typography
-               component='div'
-               variant='body2'
-               color='textPrimary'
-            >
-               The first image will be the main picture of the ad.
-            </Typography>
+                  component='div'
+                  variant='body2'
+                  color='textPrimary'
+               >
+                  The first image will be the main picture of the ad.
+               </Typography>
+               <Box className={classes.thumbsContainer}>
+                  <Box className={classes.dropzone}>
+                     <Typography variant='body2' color='textPrimary'>
+                        Click to add or drag the image here.
+                     </Typography>
+                  </Box>
+                  <Box 
+                     className={classes.thumb}
+                     style={{ backgroundImage: 'url(https://source.unsplash.com/random)' }}
+                  >
+                     <Box className={classes.mainImage}>
+                        <Typography variant='body2' color='secondary'>
+                           Main
+                        </Typography>
+                     </Box>
+                     <Box className={classes.mask}>
+                        <IconButton color='secondary'>
+                           <DeleteForever fontSize="large" />
+                        </IconButton>
+                     </Box>
+                  </Box>
+               </Box>
             </Box>
          </Container>
 
