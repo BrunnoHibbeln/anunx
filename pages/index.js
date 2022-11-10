@@ -57,7 +57,7 @@ const Home = () => {
             </Box>
          </Container>
 
-         <Container maxWidth='md' className={classes.cardGrid}>
+         <Container maxWidth='lg' className={classes.cardGrid}>
 			<Typography
                component='h2'
                variant='h4'
