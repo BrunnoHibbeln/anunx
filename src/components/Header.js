@@ -1,43 +1,98 @@
-import React from 'react'
+import React, { useState } from 'react'
+import Link from 'next/link'
 import { makeStyles } from '@material-ui/core/styles'
 import {
-   AppBar,
-   Toolbar,
-   Typography,
-   Button,
-   IconButton,
+	AppBar,
+	Toolbar,
+	Typography,
+	Button,
+	Container,
+	IconButton,
+	Avatar,
+	Menu,
+	MenuItem,
+	Divider,
 } from '@material-ui/core'
 
-import MenuIcon from '@material-ui/icons/Menu'
+import {
+	AccountCircle,
+	MenuIcon,
+} from '@material-ui/icons'
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-  },
+	menuButton: {
+		marginRight: theme.spacing(2),
+	},
+	title: {
+		flexGrow: 1,
+	},
+	userName: {
+		marginLeft: '6px'
+	},
+	divider: {
+		margin: '8px 0px'
+	},
 }))
 
-export default function ButtonAppBar() {
-  const classes = useStyles();
+const ButtonAppBar = () => {
+	const classes = useStyles();
+	const [ anchorUserMenu, setAnchorUserMenu ] = useState(false)
+	const openUserMenu = Boolean(anchorUserMenu)
 
-  return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            News
-          </Typography>
-          <Button color="inherit">Login</Button>
-        </Toolbar>
-      </AppBar>
-    </div>
-  )
+	return (
+		<>
+			<AppBar position="static" elevation={3}>
+				<Container maxWidth='lg'>
+					<Toolbar>
+						<Typography variant="h6" className={classes.title}>
+							Anunx
+						</Typography>
+						<Link href='/user/publish'>
+							<Button color="inherit" variant='outlined'>
+								Advertise and Sell
+							</Button>
+						</Link>
+						<IconButton 
+							color='secondary'
+							onClick={(e) => setAnchorUserMenu(e.currentTarget)}
+						>
+							{
+								true === false
+								? <Avatar src='' />
+								: <AccountCircle />
+							}
+							<Typography
+								variant='subtitle2'
+								color='secondary'
+								className={classes.userName}
+							>
+								Brunno Hibbeln
+							</Typography>
+						</IconButton>
+
+						<Menu
+							anchorEl={anchorUserMenu}
+							open={openUserMenu}
+							onClose={() => setAnchorUserMenu(null)}
+							anchorOrigin={{
+								vertical: 'top',
+								horizontal: 'right',
+							}}
+						>
+							<Link href='/user/dashboard'>
+								<MenuItem>My Ads</MenuItem>
+							</Link>
+							<Link href='/user/publish'>
+								<MenuItem>Publish new ad</MenuItem>
+							</Link>
+							<Divider className={classes.divider} />
+							<MenuItem>Sign out</MenuItem>
+						</Menu>
+					</Toolbar>
+				</Container>
+			</AppBar>
+		</>
+	)
 }
+
+export default ButtonAppBar
