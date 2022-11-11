@@ -23,9 +23,6 @@ const useStyles = makeStyles((theme) => ({
    mask: {},
    mainImage: {},
 
-   container: {
-      padding: theme.spacing(8, 0, 6)
-   },
    box: {
       background: theme.palette.background.white,
       padding: theme.spacing(3)
@@ -109,7 +106,7 @@ const Publish = () => {
 
    return (
       <TemplateDefault>
-         <Container maxWidth='sm' className={classes.container}>
+         <Container maxWidth='sm'>
             <Typography
                component='h1'
                variant='h2'
