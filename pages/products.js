@@ -10,8 +10,10 @@ import {
    Typography,
 } from '@material-ui/core'
 
-import TemplateDefault from '../src/templates/Default'
 import { makeStyles } from '@material-ui/core'
+import Carousel from 'react-material-ui-carousel'
+
+import TemplateDefault from '../src/templates/Default'
 
 const useStyles = makeStyles((theme) => ({
    box: {
@@ -26,6 +28,12 @@ const useStyles = makeStyles((theme) => ({
       fontWeight: 'bold',
       marginBottom: '15px', 
    },
+   card: {
+      height: '100%',
+   },
+   cardMedia: {
+      paddingTop: '56%',
+   },
 }))
 
 const Products = () => {
@@ -37,7 +45,32 @@ const Products = () => {
             <Grid container spacing={3}>
                <Grid item xs={8}>
                   <Box className={classes.box}>
-                     Carousel
+                     <Carousel
+                        autoPlay={false}
+                        animation='slide'
+                        navButtonsAlwaysVisible
+                        navButtonsProps={{
+                           style: {
+                              color: 'white',
+
+                           }
+                       }}
+                     >
+                        <Card className={classes.card}>
+                           <CardMedia 
+                              className={classes.cardMedia}
+                              image={'https://source.unsplash.com/random?a=1'}
+                              title='Image title'
+                           />
+                        </Card>
+                        <Card className={classes.card}>
+                           <CardMedia 
+                              className={classes.cardMedia}
+                              image={'https://source.unsplash.com/random?a=2'}
+                              title='Image title'
+                           />
+                        </Card>
+                     </Carousel>
                   </Box>
                   <Box className={classes.box} textAlign='left'>
                      <Typography
