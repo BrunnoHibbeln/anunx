@@ -14,11 +14,13 @@ import {
    InputLabel,
    OutlinedInput,
    InputAdornment,
+   MenuItem,
+   FormHelperText,
 } from '@material-ui/core'
 
 import { useDropzone } from 'react-dropzone'
 import { makeStyles } from '@material-ui/core/styles'
-import { DeleteForever, ErrorSharp } from '@material-ui/icons'
+import { DeleteForever } from '@material-ui/icons'
 
 import TemplateDefault from '../../src/templates/Default'
 
@@ -87,6 +89,9 @@ const validationSchema = yup.object().shape({
       .min(6, 'Write a longer title')
       .max(50, 'Write a shorter title')
       .required('Required field'),
+
+   category: yup.string()
+      .required('Required field')
 })
 
 const Publish = () => {
@@ -141,6 +146,7 @@ const Publish = () => {
          <Formik
             initialValues={{
                title: '',
+               category: '',
             }}
             validationSchema={validationSchema}
             onSubmit={() => {
@@ -159,58 +165,59 @@ const Publish = () => {
                      <form onSubmit={handleSubmit}>
                         <Container maxWidth='md' className={classes.boxContainer}>
                            <Box className={classes.box}>
-                           <Typography
-                              component='h6'
-                              variant='h6'
-                              color='textPrimary'
-                           >
-                              Ad title
-                           </Typography>
-                           <TextField 
-                              name='title'
-                              value={values.title}
-                              onChange={handleChange}
-                              label='Ex: Broken bicycle $30'
-                              size='small'
-                              fullWidth
-                              error={errors.title}
-                              helperText={errors.title}
-                           />
+                              <Typography
+                                 component='h6'
+                                 variant='h6'
+                                 color='textPrimary'
+                              >
+                                 Ad title
+                              </Typography>
+                              <TextField 
+                                 name='title'
+                                 value={values.title}
+                                 onChange={handleChange}
+                                 label='Ex: Broken bicycle $30'
+                                 size='small'
+                                 fullWidth
+                                 error={errors.title}
+                                 helperText={errors.title}
+                              />
 
-                           <br /> <br />
+                              <br /> <br />
 
-                           <Typography 
-                              component='h6'
-                              variant='h6'
-                              color='textPrimary'
-                           >
-                              Category
-                           </Typography>
-                           <Select 
-                              native
-                              value=''
-                              fullWidth
-                              onChange={() => {}}
-                              inputProps={{
-                                 name: 'age',
-                              }}
-                           >
-                              <option value=''>Select</option>
-                              <option value={1}>Babies and kids</option>
-                              <option value={2}>Agriculture</option>
-                              <option value={3}>Fashion</option>
-                              <option value={3}>Cars, Motocycles and Boats</option>
-                              <option value={3}>Services</option>
-                              <option value={3}>Leisure</option>
-                              <option value={3}>Animals</option>
-                              <option value={3}>Properties</option>
-                              <option value={3}>Equipments and tools</option>
-                              <option value={3}>Smartphones and Tablets</option>
-                              <option value={3}>Sport</option>
-                              <option value={3}>Technology</option>
-                              <option value={3}>Job</option>
-                              <option value={3}>Other</option>
-                           </Select>
+                              <Typography 
+                                 component='h6'
+                                 variant='h6'
+                                 color='textPrimary'
+                              >
+                                 Category
+                              </Typography>
+                              <FormControl error={errors.category} fullWidth>
+                                 <Select 
+                                    name='category'
+                                    value={values.category}
+                                    fullWidth
+                                    onChange={handleChange}
+                                 >
+                                    <MenuItem value='Babies and kids'>Babies and kids</MenuItem>
+                                    <MenuItem value='Agriculture'>Agriculture</MenuItem>
+                                    <MenuItem value='Fashion'>Fashion</MenuItem>
+                                    <MenuItem value='Cars, Motocycles and Boats'>Cars, Motocycles and Boats</MenuItem>
+                                    <MenuItem value='Services'>Services</MenuItem>
+                                    <MenuItem value='Leisure'>Leisure</MenuItem>
+                                    <MenuItem value='Animals'>Animals</MenuItem>
+                                    <MenuItem value='Properties'>Properties</MenuItem>
+                                    <MenuItem value='Equipments and tools'>Equipments and tools</MenuItem>
+                                    <MenuItem value='Smartphones and Tablets'>Smartphones and Tablets</MenuItem>
+                                    <MenuItem value='Sport'>Sport</MenuItem>
+                                    <MenuItem value='Technology'>Technology</MenuItem>
+                                    <MenuItem value='Job'>Job</MenuItem>
+                                    <MenuItem value='Other'>Other</MenuItem>
+                                 </Select>
+                                 <FormHelperText>
+                                    { errors.category }
+                                 </FormHelperText>
+                              </FormControl>
                            </Box>
                         </Container>
                         
