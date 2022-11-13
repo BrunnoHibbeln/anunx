@@ -16,6 +16,7 @@ import {
    InputAdornment,
    MenuItem,
    FormHelperText,
+   Input,
 } from '@material-ui/core'
 
 import { useDropzone } from 'react-dropzone'
@@ -39,6 +40,10 @@ const useStyles = makeStyles((theme) => ({
       display: 'flex',
       flexWrap: 'wrap',
       marginTop: '15px',
+   },
+   inputLabel: {
+      fontWeight: 400,
+      color: theme.palette.primary.main,
    },
    dropzone: {
       display: 'flex',
@@ -91,7 +96,15 @@ const validationSchema = yup.object().shape({
       .required('Required field'),
 
    category: yup.string()
-      .required('Required field')
+      .required('Required field'),
+
+   description: yup.string()
+      .min(50, 'Write a longer description')
+      .required('Required field'),
+
+   price: yup.number()
+      .max(3, 'Write a shorter price')
+      .required('Required field'),
 })
 
 const Publish = () => {
@@ -122,31 +135,12 @@ const Publish = () => {
    return (
       <TemplateDefault>
 
-         <Container maxWidth='sm'>
-            <Typography
-               component='h1'
-               variant='h2'
-               align='center'
-               color='primary'
-            >
-               Publish ad
-            </Typography>
-            <Typography
-               component='h5'
-               variant='h6'
-               align='center'
-               color='textPrimary'
-            >
-               The more detailed the better.
-            </Typography>
-         </Container>
-
-         <br /><br />
-
          <Formik
             initialValues={{
                title: '',
                category: '',
+               description: '',
+               price: '',
             }}
             validationSchema={validationSchema}
             onSubmit={() => {
@@ -160,39 +154,58 @@ const Publish = () => {
                   handleChange,
                   handleSubmit,
                }) => {
-                  console.log(errors)
                   return (
                      <form onSubmit={handleSubmit}>
+
+                        {/* PAGE TITLE */}
+                        <Container maxWidth='sm'>
+                           <Typography
+                              component='h1'
+                              variant='h2'
+                              align='center'
+                              color='primary'
+                           >
+                              Publish ad
+                           </Typography>
+                           <Typography
+                              component='h5'
+                              variant='h6'
+                              align='center'
+                              color='textPrimary'
+                           >
+                              The more detailed, better.
+                           </Typography>
+                        </Container>
+               
+                        <br /><br />
+
+                        {/* AD TITLE AND CATEGORY */}
                         <Container maxWidth='md' className={classes.boxContainer}>
                            <Box className={classes.box}>
-                              <Typography
-                                 component='h6'
-                                 variant='h6'
-                                 color='textPrimary'
-                              >
-                                 Ad title
-                              </Typography>
-                              <TextField 
-                                 name='title'
-                                 value={values.title}
-                                 onChange={handleChange}
-                                 label='Ex: Broken bicycle $30'
-                                 size='small'
-                                 fullWidth
-                                 error={errors.title}
-                                 helperText={errors.title}
-                              />
+                              <FormControl error={errors.title} fullWidth>
+                                 <InputLabel 
+                                    className={classes.inputLabel}
+                                 >
+                                    Ad title
+                                 </InputLabel>
+                                 <Input
+                                    name='title'
+                                    value={values.title}
+                                    onChange={handleChange}
+                                 />
+                                 <FormHelperText>
+                                    { errors.title }
+                                 </FormHelperText>
+                              </FormControl>
 
                               <br /> <br />
 
-                              <Typography 
-                                 component='h6'
-                                 variant='h6'
-                                 color='textPrimary'
-                              >
-                                 Category
-                              </Typography>
                               <FormControl error={errors.category} fullWidth>
+                                 <InputLabel
+                                    className={classes.inputLabel}
+                                 >
+                                    Category
+                                 </InputLabel>
                                  <Select 
                                     name='category'
                                     value={values.category}
@@ -221,6 +234,7 @@ const Publish = () => {
                            </Box>
                         </Container>
                         
+                        {/* IMAGE */}
                         <Container maxWidth='md' className={classes.boxContainer}>
                            <Box className={classes.box}>
                               <Typography
@@ -279,31 +293,31 @@ const Publish = () => {
                            </Box>
                         </Container>
 
+                        {/* DESCRIPTION */}
                         <Container maxWidth='md' className={classes.boxContainer}>
                            <Box className={classes.box}>
-                              <Typography
-                                 component='h6'
-                                 variant='h6'
-                                 color='textPrimary'
-                              >
-                                 Description
-                              </Typography>
-                              <Typography
-                              component='div'
-                              variant='body2'
-                              color='textPrimary'
-                              >
-                                 Write the details of what you are selling.
-                              </Typography>
-                              <TextField 
-                                 multiline
-                                 minRows={6}
-                                 variant='outlined'
-                                 fullWidth
-                              />
+                              <FormControl error={errors.description} fullWidth>
+                                 <InputLabel
+                                    className={classes.inputLabel}
+                                 >
+                                    Write the details of what you are selling.
+                                 </InputLabel>
+                                 <Input
+                                    name='description'
+                                    value={values.description}
+                                    onChange={handleChange}
+                                    multiline
+                                    minRows={6}
+                                    variant='outlined'
+                                 />
+                                 <FormHelperText>
+                                    { errors.description }
+                                 </FormHelperText>
+                              </FormControl>
                            </Box>
                         </Container>
-
+                        
+                        {/* PRICE */}
                         <Container maxWidth='md' className={classes.boxContainer}>
                            <Box className={classes.box}>
                               <Typography
@@ -314,17 +328,30 @@ const Publish = () => {
                                  Price
                               </Typography>
                               <br />
-                              <FormControl fullWidth variant='outlined'>
+                              <FormControl
+                                 error={errors.price}
+                                 fullWidth
+                                 variant='outlined'
+                              >
                                  <InputLabel>Value</InputLabel>
                                  <OutlinedInput 
-                                    //onChange={() = {}}
-                                    startAdornment={<InputAdornment position='start'>$</InputAdornment>}
+                                    name='price'
+                                    value={values.price}
+                                    onChange={handleChange}
+                                    helperText={errors.description}
                                     labelWidth={40}
+                                    startAdornment={
+                                       <InputAdornment position='start'>$</InputAdornment>
+                                    }
                                  />
+                                 <FormHelperText>
+                                    { errors.price }
+                                 </FormHelperText>
                               </FormControl>
                            </Box>
                         </Container>
-
+                        
+                        {/* CONTACT */}
                         <Container maxWidth='md' className={classes.boxContainer}>
                            <Box className={classes.box}>
                               <Typography
@@ -358,7 +385,8 @@ const Publish = () => {
                               <br /> <br />
                            </Box>
                         </Container>
-
+                        
+                        {/* SUBMIT BUTTON */}
                         <Container maxWidth='md' className={classes.boxContainer}>
                            <Box textAlign="right">
                               <Button
