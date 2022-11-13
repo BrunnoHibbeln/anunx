@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core'
 
 import SearchIcon from '@material-ui/icons/Search'
+
 import TemplateDefault from '../src/templates/Default'
 import Card from '../src/components/Card'
 
@@ -52,7 +53,7 @@ const Home = () => {
          </Container>
 
          <Container maxWidth='lg' className={classes.cardGrid}>
-			<Typography
+			   <Typography
                component='h2'
                variant='h4'
                align='center'
