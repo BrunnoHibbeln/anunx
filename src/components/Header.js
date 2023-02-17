@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { signOut, useSession } from 'next-auth/client'
 import Link from 'next/link'
 import { makeStyles } from '@material-ui/core/styles'
 import {
@@ -26,8 +27,11 @@ const useStyles = makeStyles((theme) => ({
 	title: {
 		flexGrow: 1,
 	},
+	headButton: {
+		marginRight: 10,
+	},	
 	userName: {
-		marginLeft: '6px'
+		marginLeft: '8px'
 	},
 	divider: {
 		margin: '8px 0px'
@@ -37,6 +41,8 @@ const useStyles = makeStyles((theme) => ({
 const ButtonAppBar = () => {
 	const classes = useStyles();
 	const [ anchorUserMenu, setAnchorUserMenu ] = useState(false)
+	const [ session ] = useSession()
+
 	const openUserMenu = Boolean(anchorUserMenu)
 
 	return (
@@ -47,28 +53,38 @@ const ButtonAppBar = () => {
 						<Typography variant="h6" className={classes.title}>
 							Anunx
 						</Typography>
-						<Link href='/user/publish'>
-							<Button color="inherit" variant='outlined'>
+						<Link href={session ? '/user/publish' : '/auth/signin'} passHref>
+							<Button
+								color="inherit"
+								variant='outlined'
+								className={classes.headButton}
+							>
 								Advertise and Sell
 							</Button>
 						</Link>
-						<IconButton 
-							color='secondary'
-							onClick={(e) => setAnchorUserMenu(e.currentTarget)}
-						>
-							{
-								true === false
-								? <Avatar src='' />
-								: <AccountCircle />
-							}
-							<Typography
-								variant='subtitle2'
-								color='secondary'
-								className={classes.userName}
-							>
-								Brunno Hibbeln
-							</Typography>
-						</IconButton>
+
+						{
+							session
+							? (
+								<IconButton 
+									color='secondary'
+									onClick={(e) => setAnchorUserMenu(e.currentTarget)}
+								>
+									{
+										session.user.image
+											? <Avatar src={session.user.image} />
+											: <AccountCircle />
+									}
+									<Typography
+										variant='subtitle2'
+										color='secondary'
+										className={classes.userName}
+									>
+										{session.user.name}
+									</Typography>
+								</IconButton>
+							) : null
+						}
 
 						<Menu
 							anchorEl={anchorUserMenu}
@@ -86,7 +102,9 @@ const ButtonAppBar = () => {
 								<MenuItem>Publish new ad</MenuItem>
 							</Link>
 							<Divider className={classes.divider} />
-							<MenuItem>Sign out</MenuItem>
+							<MenuItem onClick={() => signOut({
+								callbackUrl: '/'
+							})}>Sign out</MenuItem>
 						</Menu>
 					</Toolbar>
 				</Container>
